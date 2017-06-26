@@ -1,0 +1,52 @@
+.hlp-index {
+  flex-direction: column;
+  min-width: 0;
+}
+
+.hlp-index-info {
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  height: 100%;
+}
+
+.hlp-index-noresults {
+  font-size: 2rem;
+}
+
+.hlp-index-filter {
+  display: flex;
+  padding: 0.7rem;
+  border-bottom: 1px dotted #333;
+}
+
+.hlp-index-filter-txt {
+  flex: 1;
+}
+
+.btn-filter {
+  margin-left: 0.4rem;
+}
+
+.hlp-index-list {
+  flex: 3;
+}
+
+.hlp-index-list-inner {
+  min-width: 100%;
+  display: inline-block;
+}
+
+.hlp-index-chapters {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  border-top: 3px solid #333;
+}
+
+.hlp-index-chapters-headline {
+  padding: 0.5rem;
+  text-align: center;
+  font-weight: bold;
+  border-bottom: 1px solid #DDDDDD;
+}

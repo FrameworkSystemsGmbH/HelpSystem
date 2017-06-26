@@ -1,0 +1,11 @@
+.hlp-app-sidebar {
+  flex-direction: column;
+  min-width: 15rem;
+  background-color: #EBEBEB;
+  border-right: 3px solid #333;
+}
+
+.hlp-app-viewer {
+  flex: 3;
+  display: flex;
+}

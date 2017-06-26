@@ -1,0 +1,20 @@
+// Place your settings in this file to overwrite default and user settings.
+{
+  "editor.wordWrap": "wordWrapColumn",
+  "editor.wordWrapColumn": 180,
+  "editor.wrappingIndent": "indent",
+
+  "search.exclude": {
+    "**/dist": true,
+    "**/node_modules": true,
+    "**/src/files": true
+  },
+
+  "telemetry.enableTelemetry": false,
+  "telemetry.enableCrashReporter": false,
+
+  "html.format.wrapLineLength": 180,
+  "html.format.maxPreserveNewLines": 1,
+  "html.suggest.angular1": false,
+  "html.suggest.ionic": false
+}

@@ -1,0 +1,38 @@
+.hlp-search {
+  flex-direction: column;
+  min-width: 0;
+}
+
+.hlp-search-info {
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  height: 100%;
+}
+
+.hlp-search-noresults {
+  font-size: 2rem;
+}
+
+.hlp-search-form {
+  display: flex;
+  padding: 0.7rem;
+  border-bottom: 1px dotted #333;
+}
+
+.hlp-search-form-txt {
+  flex: 1;
+}
+
+.btn-search {
+  margin-left: 0.4rem;
+}
+
+.hlp-search-list {
+  flex: 1;
+}
+
+.hlp-search-list-inner {
+  min-width: 100%;
+  display: inline-block;
+}

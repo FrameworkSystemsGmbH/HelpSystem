@@ -1,0 +1,7 @@
+<div class="hlp-content" [ngStyle]="style" [ngClass]="styleClass">
+  <div class="hlp-content-loading flex" *ngIf="!initialized">
+    <i class="fa fa-fw fa-cog fa-spin fa-2x"></i><strong>Loading</strong>
+  </div>
+  <hlp-tree #treeComp [nodes]="chapterNodes" [iconLeaf]="'fa-book'" [iconExpanded]="'fa-folder-open'" [iconCollapsed]="'fa-folder'" [checkIsNodeSelected]="checkIsNodeSelected" (onNodeSelected)="onNodeSelected($event)"
+    *ngIf="initialized"></hlp-tree>
+</div>

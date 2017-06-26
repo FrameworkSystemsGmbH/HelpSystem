@@ -1,0 +1,10 @@
+<div class="hlp-navigation gradientsilver" [ngStyle]="style" [ngClass]="styleClass">
+  <div class="hlp-navigation-btn-group">
+    <button class="btn" [ngClass]="isContentSelected() ? 'btn-success' : 'btn-primary'" (click)="showContent($event)"><i class="fa fa-fw fa-file-text"></i>Contents</button>
+    <button class="btn" [ngClass]="isIndexSelected() ? 'btn-success' : 'btn-primary'" (click)="showIndex($event)"><i class="fa fa-fw fa-list"></i>Index</button>
+  </div>
+  <div class="hlp-navigation-btn-group">
+    <button class="btn" [ngClass]="isSearchSelected() ? 'btn-success' : 'btn-primary'" (click)="showSearch($event)"><i class="fa fa-fw fa-search"></i>Search</button>
+    <button class="btn btn-primary" (click)="print($event)"><i class="fa fa-fw fa-print"></i>Print</button>
+  </div>
+</div>

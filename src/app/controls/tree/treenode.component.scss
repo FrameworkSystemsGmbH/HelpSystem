@@ -1,0 +1,25 @@
+.hlp-treenode {
+  margin: 0;
+  white-space: nowrap;
+}
+
+.hlp-treenode-content {
+  padding: 0 0.5rem;
+  cursor: pointer;
+}
+
+.hlp-treenode-children {
+  display: block;
+  list-style: none;
+  padding-left: 1.5em;
+}
+
+.hlp-treenode-content:hover {
+  background-color: white;
+}
+
+.hlp-treenode-selected {
+  color: white;
+  background-color: #337AB7 !important;
+  font-weight: bold;
+}

@@ -1,0 +1,8 @@
+<li #itemRef class="hlp-listitem" *ngIf="item">
+  <div class="hlp-listitem-content" [ngClass]="{'hlp-listitem-highlight': isSelected(), 'hlp-listitem-noselect': !canSelect()}" (click)="onClick($event)">
+    <span class="hlp-listitem-label">{{item.label}}</span>
+  </div>
+  <ul class="hlp-listitem-children" *ngIf="showChildren() && item.children && item.children.length">
+    <hlp-listitem *ngFor="let child of item.children" [item]="child"></hlp-listitem>
+  </ul>
+</li>

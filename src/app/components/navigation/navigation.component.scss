@@ -1,0 +1,19 @@
+.hlp-navigation {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0.5rem;
+  border-bottom: 3px solid #333;
+}
+
+.hlp-navigation > .hlp-navigation-btn-group {
+  display: flex;
+  flex: 1;
+  flex-wrap: wrap;
+}
+
+.hlp-navigation > .hlp-navigation-btn-group > button {
+  flex: 1;
+  min-width: 11rem;
+  margin: 0.2rem;
+  font-weight: bold;
+}
