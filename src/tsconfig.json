@@ -15,5 +15,8 @@
       "node_modules/@types",
       "src/app/types"
     ]
-  }
+  },
+  "exclude": [
+    "node_modules"
+  ]
 }
