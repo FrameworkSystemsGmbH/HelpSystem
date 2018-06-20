@@ -1,20 +1,25 @@
-// Place your settings in this file to overwrite default and user settings.
 {
-  "editor.wordWrap": "wordWrapColumn",
-  "editor.wordWrapColumn": 180,
+  "editor.smoothScrolling": true,
+  "editor.tabSize": 2,
+  "editor.wordWrap": "off",
   "editor.wrappingIndent": "indent",
+
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true,
+
+  "html.format.endWithNewline": true,
+  "html.format.maxPreserveNewLines": 1,
+  "html.format.wrapLineLength": 0,
+  "html.suggest.angular1": false,
+  "html.suggest.ionic": false,
 
   "search.exclude": {
     "**/dist": true,
-    "**/node_modules": true,
-    "**/src/files": true
+    "**/node_modules": true
   },
 
   "telemetry.enableTelemetry": false,
   "telemetry.enableCrashReporter": false,
 
-  "html.format.wrapLineLength": 180,
-  "html.format.maxPreserveNewLines": 1,
-  "html.suggest.angular1": false,
-  "html.suggest.ionic": false
+  "typescript.tsdk": "node_modules\\typescript\\lib"
 }
