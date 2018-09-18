@@ -5,14 +5,13 @@ import {
   forwardRef,
   Inject,
   Input,
-  Output,
   QueryList,
   ViewChild,
   ViewChildren
 } from '@angular/core';
 
 import { TreeComponent } from './tree.component';
-import { TreeNode } from './treenode.model';
+import { TreeNode } from './treenode';
 
 @Component({
   selector: 'hlp-treenode',
@@ -21,18 +20,23 @@ import { TreeNode } from './treenode.model';
 })
 export class TreeNodeComponent {
 
-  static ICON_CLASS: string = 'hlp-treenode-icon fa fa-fw';
+  private static ICON_CLASS: string = 'hlp-treenode-icon fa fa-fw';
 
-  @Input() node: TreeNode;
+  @Input()
+  public node: TreeNode;
 
-  @ViewChild('nodeRef') nodeRef: ElementRef;
-  @ViewChildren(TreeNodeComponent) nodeComps: QueryList<TreeNodeComponent>;
+  @ViewChild('nodeRef')
+  public nodeRef: ElementRef;
+
+  @ViewChildren(TreeNodeComponent)
+  public nodeComps: QueryList<TreeNodeComponent>;
 
   public expanded: boolean = false;
 
   constructor(
     @Inject(forwardRef(() => TreeComponent)) private _tree: TreeComponent,
-    private _changeDetectorRef: ChangeDetectorRef) { }
+    private _changeDetectorRef: ChangeDetectorRef
+  ) { }
 
   public getIcon(): string {
     let icon;
@@ -90,10 +94,10 @@ export class TreeNodeComponent {
 
   public expandToSelectedNode(idPath: Array<string>): void {
     if (this.nodeComps && this.nodeComps.length && idPath && idPath.length) {
-      let idToExpand: string = idPath[0];
-      let nodeCompsArr: Array<TreeNodeComponent> = this.nodeComps.toArray();
+      const idToExpand: string = idPath[0];
+      const nodeCompsArr: Array<TreeNodeComponent> = this.nodeComps.toArray();
       for (let i = 0; i < nodeCompsArr.length; i++) {
-        let nodeComp: TreeNodeComponent = nodeCompsArr[i];
+        const nodeComp: TreeNodeComponent = nodeCompsArr[i];
         if (nodeComp.node.id === idToExpand) {
           if (!nodeComp.expanded) {
             nodeComp.toggle();
@@ -104,7 +108,7 @@ export class TreeNodeComponent {
           this._changeDetectorRef.reattach();
 
           if (idPath.length > 1) {
-            let remainingIds = idPath.splice(1);
+            const remainingIds = idPath.splice(1);
             nodeComp.expandToSelectedNode(remainingIds);
           }
 

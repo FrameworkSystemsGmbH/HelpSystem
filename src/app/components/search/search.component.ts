@@ -1,14 +1,14 @@
 import { ChangeDetectorRef, Component, ElementRef, Input, OnInit, OnDestroy, Renderer, ViewChild } from '@angular/core';
+import { Subject, Subscription } from 'rxjs';
+import { distinctUntilChanged, switchMap } from 'rxjs/operators';
 
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
-import { ISubscription } from 'rxjs/Subscription';
-
-import { ListComponent, ListItem } from '../../controls/list';
-
-import { SelectedChapterChangedEventArgs, SelectedTabChangedEventArgs } from '../../eventargs';
-import { ChapterService, SearchService, StateService } from '../../services';
-import { Chapter, Tab } from '../../models';
+import { ListComponent } from 'app/controls/list/list.component';
+import { ListItem } from 'app/controls/list/listitem';
+import { ChapterService } from 'app/services/chapter.service';
+import { SearchService } from 'app/services/search.service';
+import { StateService } from 'app/services/state.service';
+import { SelectedChapterChangedEventArgs } from 'app/eventargs/selectedchapterchanged.eventargs';
+import { Chapter } from 'app/models/chapter';
 
 @Component({
   selector: 'hlp-search',
@@ -17,11 +17,17 @@ import { Chapter, Tab } from '../../models';
 })
 export class SearchComponent implements OnInit, OnDestroy {
 
-  @Input() style: any;
-  @Input() styleClass: any;
+  @Input()
+  public style: any;
 
-  @ViewChild('txtSearch') txtSearch: ElementRef;
-  @ViewChild('listComp') listComp: ListComponent;
+  @Input()
+  public styleClass: any;
+
+  @ViewChild('txtSearch')
+  public txtSearch: ElementRef;
+
+  @ViewChild('listComp')
+  public listComp: ListComponent;
 
   public searchTerm: string;
   public searchTermLast: string;
@@ -29,10 +35,10 @@ export class SearchComponent implements OnInit, OnDestroy {
   public chapterItems: Array<ListItem>;
 
   private _inputSubject: Subject<string>;
-  private _inputSubjectSub: ISubscription;
+  private _inputSubjectSub: Subscription;
   private _searchSubject: Subject<string>;
-  private _searchSubjectSub: ISubscription;
-  private _selectedChapterSub: ISubscription;
+  private _searchSubjectSub: Subscription;
+  private _selectedChapterSub: Subscription;
 
   constructor(
     private _chapterService: ChapterService,
@@ -43,32 +49,32 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     this._searchSubject = new Subject<string>();
-    this._searchSubjectSub = this._searchSubject
-      .distinctUntilChanged()
-      .switchMap(term => this._searchService.search(term))
-      .switchMap(chapterIds => this._chapterService.findChaptersByIds(chapterIds))
-      .subscribe(chapters => {
-        this.chapterItems = this.buildChapterList(chapters);
-        this.searching = false;
-        this.setChapter(this._stateService.getSelectedChapter(), (<any>this.constructor).name);
-      });
+    this._searchSubjectSub = this._searchSubject.pipe(
+      distinctUntilChanged(),
+      switchMap(term => this._searchService.search(term)),
+      switchMap(chapterIds => this._chapterService.findChaptersByIds(chapterIds))
+    ).subscribe(chapters => {
+      this.chapterItems = this.buildChapterList(chapters);
+      this.searching = false;
+      this.setChapter(this._stateService.getSelectedChapter(), (this.constructor as any).name);
+    });
 
     this._inputSubject = new Subject<string>();
-    this._inputSubjectSub = this._inputSubject
-      .distinctUntilChanged()
-      .subscribe(term => {
-        this.searching = true;
-        this.searchTermLast = term;
-        this._stateService.searchFilter = term;
-        this._changeDetectorRef.detectChanges();
-        this._searchSubject.next(term);
-      });
+    this._inputSubjectSub = this._inputSubject.pipe(
+      distinctUntilChanged()
+    ).subscribe(term => {
+      this.searching = true;
+      this.searchTermLast = term;
+      this._stateService.searchFilter = term;
+      this._changeDetectorRef.detectChanges();
+      this._searchSubject.next(term);
+    });
 
     this._selectedChapterSub = this._stateService.selectedChapterChanged.subscribe((args: SelectedChapterChangedEventArgs) => {
       this.setChapter(args.chapter, args.type);
     });
 
-    let searchFilter = this._stateService.searchFilter;
+    const searchFilter = this._stateService.searchFilter;
 
     if (searchFilter) {
       this.searchTerm = searchFilter;
@@ -89,11 +95,11 @@ export class SearchComponent implements OnInit, OnDestroy {
       return null;
     }
 
-    let items: Array<ListItem> = new Array<ListItem>();
+    const items: Array<ListItem> = new Array<ListItem>();
 
     for (let i = 0; i < chapters.length; i++) {
-      let chapter: Chapter = chapters[i];
-      let listItem: ListItem = new ListItem();
+      const chapter: Chapter = chapters[i];
+      const listItem: ListItem = new ListItem();
       listItem.id = chapter.id;
       listItem.label = chapter.label;
       listItem.data = chapter;
@@ -112,7 +118,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     if (this.listComp) {
       this.listComp.selectItemById(chapter ? chapter.id : null);
 
-      if (type !== (<any>this.constructor).name) {
+      if (type !== (this.constructor as any).name) {
         this.listComp.scrollSelectedIntoView();
       }
     }
@@ -127,7 +133,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   public onItemSelected(item: ListItem): void {
-    this._stateService.selectChapter(item ? item.data : null, (<any>this.constructor).name);
+    this._stateService.selectChapter(item ? item.data : null, (this.constructor as any).name);
   }
 
   public search(): void {

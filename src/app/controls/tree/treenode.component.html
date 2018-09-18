@@ -1,7 +1,7 @@
 <li #nodeRef class="hlp-treenode" *ngIf="node">
   <div class="hlp-treenode-content" [ngClass]="{'hlp-treenode-selected': isSelected()}" (click)="onClick($event)">
     <span [class]="getIcon()" *ngIf="getIcon()" (click)="toggle($event)"></span>
-    <span class="hlp-treenode-label">{{node.label}}</span>
+    <span class="hlp-treenode-label">{{ node.label }}</span>
   </div>
   <ul class="hlp-treenode-children" *ngIf="expanded && node.children && node.children.length">
     <hlp-treenode *ngFor="let child of node.children" [node]="child"></hlp-treenode>

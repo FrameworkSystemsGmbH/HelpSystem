@@ -1,44 +1,43 @@
-import { EventEmitter, Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
+import { Injectable } from '@angular/core';
+import { Http } from '@angular/http';
+import { Observable, of as obsOf } from 'rxjs';
+import { map, share } from 'rxjs/operators';
 
-import { Index } from '../models';
-
-import { Observable } from 'rxjs/Observable';
-import { ISubscription } from 'rxjs/Subscription';
+import { Index } from 'app/models';
 
 @Injectable()
 export class IndexService {
 
   private _indices: Array<Index>;
   private _indicesStream: Observable<Array<Index>>;
-  private _indicesStreamSub: ISubscription;
 
   public constructor(private _http: Http) { }
 
   public getIndices(term: string): Observable<Array<Index>> {
     if (!this._indicesStream) {
-      this._indicesStream = this._http.get('files/json/index.json')
-        .map(res => <Array<Index>>res.json())
-        .share();
+      this._indicesStream = this._http.get('files/json/index.json').pipe(
+        map(res => res.json() as Array<Index>),
+        share()
+      );
 
-      this._indicesStreamSub = this._indicesStream.subscribe((indices: Array<Index>) => {
+      this._indicesStream.subscribe((indices: Array<Index>) => {
         this._indices = indices;
       });
     }
 
     if (!term || !term.trim()) {
-      return this._indices ? Observable.of(this._indices) : this._indicesStream;
+      return this._indices ? obsOf(this._indices) : this._indicesStream;
     }
 
-    let termLower: string = term.trim().toLowerCase();
+    const termLower: string = term.trim().toLowerCase();
 
     return this._indices
-      ? Observable.of(this.filterIndices(this._indices, termLower))
-      : this._indicesStream.map((indices: Array<Index>) => this.filterIndices(indices, termLower));
+      ? obsOf(this.filterIndices(this._indices, termLower))
+      : this._indicesStream.pipe(map((indices: Array<Index>) => this.filterIndices(indices, termLower)));
   }
 
   private filterIndices(indices: Array<Index>, term: string): Array<Index> {
-    let filteredIndices: Array<Index> = new Array<Index>();
+    const filteredIndices: Array<Index> = new Array<Index>();
 
     if (indices && indices.length) {
       indices.forEach(index => {
@@ -49,7 +48,7 @@ export class IndexService {
         }
 
         if ((filteredChildren && filteredChildren.length) || ((index.label.toLowerCase().indexOf(term) >= 0) && index.chapters && index.chapters.length)) {
-          let clone: Index = this.cloneIndexWithoutChildren(index);
+          const clone: Index = this.cloneIndexWithoutChildren(index);
           clone.children = filteredChildren;
           filteredIndices.push(clone);
         }
@@ -60,7 +59,7 @@ export class IndexService {
   }
 
   private cloneIndexWithoutChildren(index: Index): Index {
-    let clone: Index = new Index();
+    const clone: Index = new Index();
     clone.label = index.label;
     clone.chapters = index.chapters;
     return clone;

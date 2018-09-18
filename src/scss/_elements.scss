@@ -1,0 +1,55 @@
+.btn {
+  color: #333;
+  background-color: #f0f0f0;
+  border: 0.1rem solid #aaaaaa;
+  box-shadow: 0.1rem 0.1rem 0.3rem #aaaaaa;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+
+  &:hover,
+  &:focus {
+    background-color: #ebebeb;
+  }
+
+  &:active {
+    background-color: #e0e0e0;
+  }
+}
+
+.btn-menu {
+  min-width: 11rem;
+  color: #fff;
+  background-color: #337ab7;
+
+  &:hover,
+  &:focus {
+    background-color: #286192;
+  }
+
+  &:active {
+    background-color: #265a88;
+  }
+
+  &-selected {
+    background-color: #119400;
+
+    &:hover,
+    &:focus {
+      background-color: #119400;
+    }
+
+    &:active {
+      background-color: #119400;
+    }
+  }
+}
+
+input[type=text] {
+  width: 100%;
+  color: #333;
+  background-color: #fff;
+  border: 0.1rem solid #aaaaaa;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+}

@@ -1,11 +1,9 @@
 import { Component, ElementRef, Input, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { Http } from '@angular/http';
+import { Subscription } from 'rxjs';
 
-import { ISubscription } from 'rxjs/Subscription';
-
-import { SelectedChapterChangedEventArgs } from '../../eventargs';
-import { StateService } from '../../services';
-import { Chapter } from '../../models';
+import { StateService } from 'app/services/state.service';
+import { SelectedChapterChangedEventArgs } from 'app/eventargs/selectedchapterchanged.eventargs';
+import { Chapter } from 'app/models/chapter';
 
 @Component({
   selector: 'hlp-viewer',
@@ -14,17 +12,19 @@ import { Chapter } from '../../models';
 })
 export class ViewerComponent implements OnInit, OnDestroy {
 
-  @ViewChild('frame') frame: ElementRef;
+  @ViewChild('frame')
+  public frame: ElementRef;
 
-  @Input() style: any;
-  @Input() styleClass: any;
+  @Input()
+  public style: any;
 
-  private _selectedChapterSub: ISubscription;
-  private _doPrintFrameSub: ISubscription;
+  @Input()
+  public styleClass: any;
 
-  constructor(
-    private _http: Http,
-    private _stateService: StateService) { }
+  private _selectedChapterSub: Subscription;
+  private _doPrintFrameSub: Subscription;
+
+  constructor(private _stateService: StateService) { }
 
   public ngOnInit(): void {
     this._selectedChapterSub = this._stateService.selectedChapterChanged.subscribe((args: SelectedChapterChangedEventArgs) => {
@@ -57,13 +57,12 @@ export class ViewerComponent implements OnInit, OnDestroy {
   }
 
   private getFrame(): any {
-    let nativeFrame: any = this.frame.nativeElement;
+    const nativeFrame: any = this.frame.nativeElement;
     return nativeFrame.contentWindow || nativeFrame.contentDocument.document || nativeFrame.contentDocument;
   }
 
   private setFile(file: string): void {
-    let ifrm: any = this.getFrame();
-    ifrm.location.replace(window.location.pathname + 'files/html/' + file);
+    this.getFrame().location.replace(window.location.pathname + 'files/html/' + file);
   }
 
   public print(): void {
@@ -75,9 +74,9 @@ export class ViewerComponent implements OnInit, OnDestroy {
       return;
     }
 
-    let ua: string = navigator.userAgent;
+    const ua: string = navigator.userAgent;
 
-    let ie: boolean = ua.indexOf('MSIE') > 0 || ua.indexOf('Edge') > 0 || ua.indexOf('Trident') > 0 || ua.indexOf('rv:11') > 0;
+    const ie: boolean = ua.indexOf('MSIE') > 0 || ua.indexOf('Edge') > 0 || ua.indexOf('Trident') > 0 || ua.indexOf('rv:11') > 0;
 
     if (ie && frame.document.execCommand) {
       try {

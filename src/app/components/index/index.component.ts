@@ -1,13 +1,16 @@
 import { ChangeDetectorRef, Component, ElementRef, Input, OnInit, OnDestroy, Renderer, ViewChild } from '@angular/core';
+import { Subject, Subscription } from 'rxjs';
+import { distinctUntilChanged, switchMap } from 'rxjs/operators';
 
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
-import { ISubscription } from 'rxjs/Subscription';
-
-import { ListComponent, ListItem } from '../../controls/list';
-import { SelectedChapterChangedEventArgs, SelectedIndexChangedEventArgs, SelectedTabChangedEventArgs } from '../../eventargs';
-import { ChapterService, IndexService, StateService } from '../../services';
-import { Chapter, Index, Tab } from '../../models';
+import { ListComponent } from 'app/controls/list/list.component';
+import { ListItem } from 'app/controls/list/listitem';
+import { ChapterService } from 'app/services/chapter.service';
+import { IndexService } from 'app/services/index.service';
+import { StateService } from 'app/services/state.service';
+import { SelectedIndexChangedEventArgs } from 'app/eventargs/selectedindexchanged.eventargs';
+import { SelectedChapterChangedEventArgs } from 'app/eventargs/selectedchapterchanged.eventargs';
+import { Index } from 'app/models/index';
+import { Chapter } from 'app/models/chapter';
 
 @Component({
   selector: 'hlp-index',
@@ -16,12 +19,20 @@ import { Chapter, Index, Tab } from '../../models';
 })
 export class IndexComponent implements OnInit, OnDestroy {
 
-  @Input() style: any;
-  @Input() styleClass: any;
+  @Input()
+  public style: any;
 
-  @ViewChild('txtFilter') txtFilter: ElementRef;
-  @ViewChild('indexListComp') indexListComp: ListComponent;
-  @ViewChild('chapterListComp') chapterListComp: ListComponent;
+  @Input()
+  public styleClass: any;
+
+  @ViewChild('txtFilter')
+  public txtFilter: ElementRef;
+
+  @ViewChild('indexListComp')
+  public indexListComp: ListComponent;
+
+  @ViewChild('chapterListComp')
+  public chapterListComp: ListComponent;
 
   public filterTerm: string;
   public loading: boolean;
@@ -30,15 +41,15 @@ export class IndexComponent implements OnInit, OnDestroy {
   public chapterItems: Array<ListItem>;
 
   private _inputSubject: Subject<string>;
-  private _inputSubjectSub: ISubscription;
+  private _inputSubjectSub: Subscription;
   private _filterSubject: Subject<string>;
-  private _filterSubjectSub: ISubscription;
-  private _selectedIndexSub: ISubscription;
+  private _filterSubjectSub: Subscription;
+  private _selectedIndexSub: Subscription;
   private _chapterItemsSubject: Subject<Array<string>>;
-  private _chapterItemsSubjectSub: ISubscription;
+  private _chapterItemsSubjectSub: Subscription;
   private _selectChapterSubject: Subject<string>;
-  private _selectChapterSubjectSub: ISubscription;
-  private _selectedChapterSub: ISubscription;
+  private _selectChapterSubjectSub: Subscription;
+  private _selectedChapterSub: Subscription;
 
   constructor(
     private _chapterService: ChapterService,
@@ -49,40 +60,40 @@ export class IndexComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     this._filterSubject = new Subject<string>();
-    this._filterSubjectSub = this._filterSubject
-      .distinctUntilChanged()
-      .switchMap(term => this._indexService.getIndices(term))
-      .subscribe(indices => {
-        this.indexItems = this.buildIndexList(indices);
-        this.initialized = true;
-        this.loading = false;
-        this.setIndex(this._stateService.getSelectedIndex(), (<any>this.constructor).name);
-      });
+    this._filterSubjectSub = this._filterSubject.pipe(
+      distinctUntilChanged(),
+      switchMap(term => this._indexService.getIndices(term))
+    ).subscribe(indices => {
+      this.indexItems = this.buildIndexList(indices);
+      this.initialized = true;
+      this.loading = false;
+      this.setIndex(this._stateService.getSelectedIndex(), (this.constructor as any).name);
+    });
 
     this._inputSubject = new Subject<string>();
-    this._inputSubjectSub = this._inputSubject
-      .distinctUntilChanged()
-      .subscribe(term => {
-        this.loading = true;
-        this._changeDetectorRef.detectChanges();
-        this._stateService.indexFilter = term;
-        this._filterSubject.next(term);
-      });
+    this._inputSubjectSub = this._inputSubject.pipe(
+      distinctUntilChanged()
+    ).subscribe(term => {
+      this.loading = true;
+      this._changeDetectorRef.detectChanges();
+      this._stateService.indexFilter = term;
+      this._filterSubject.next(term);
+    });
 
     this._chapterItemsSubject = new Subject<Array<string>>();
-    this._chapterItemsSubjectSub = this._chapterItemsSubject
-      .switchMap(chapterIds => this._chapterService.findChaptersByIds(chapterIds))
-      .subscribe(chapters => {
-        this.chapterItems = this.buildChapterList(chapters);
-        this.setChapter(this._stateService.getSelectedChapter());
-      });
+    this._chapterItemsSubjectSub = this._chapterItemsSubject.pipe(
+      switchMap(chapterIds => this._chapterService.findChaptersByIds(chapterIds))
+    ).subscribe(chapters => {
+      this.chapterItems = this.buildChapterList(chapters);
+      this.setChapter(this._stateService.getSelectedChapter());
+    });
 
     this._selectChapterSubject = new Subject<string>();
-    this._selectChapterSubjectSub = this._selectChapterSubject
-      .switchMap(id => this._chapterService.findChapterById(id))
-      .subscribe(chapter => {
-        this._stateService.selectChapter(chapter);
-      });
+    this._selectChapterSubjectSub = this._selectChapterSubject.pipe(
+      switchMap(id => this._chapterService.findChapterById(id))
+    ).subscribe(chapter => {
+      this._stateService.selectChapter(chapter);
+    });
 
     this._selectedIndexSub = this._stateService.selectedIndexChanged
       .subscribe((args: SelectedIndexChangedEventArgs) => {
@@ -94,8 +105,7 @@ export class IndexComponent implements OnInit, OnDestroy {
         this.setChapter(args.chapter, args.type);
       });
 
-
-    let indexFilter = this._stateService.indexFilter;
+      const indexFilter = this._stateService.indexFilter;
 
     if (indexFilter) {
       this.filterTerm = indexFilter;
@@ -121,11 +131,11 @@ export class IndexComponent implements OnInit, OnDestroy {
       return null;
     }
 
-    let items: Array<ListItem> = new Array<ListItem>();
+    const items: Array<ListItem> = new Array<ListItem>();
 
     for (let i = 0; i < indices.length; i++) {
-      let index: Index = indices[i];
-      let listItem: ListItem = new ListItem();
+      const index: Index = indices[i];
+      const listItem: ListItem = new ListItem();
       listItem.id = index.label;
       listItem.label = index.label;
       listItem.data = index;
@@ -141,11 +151,11 @@ export class IndexComponent implements OnInit, OnDestroy {
       return null;
     }
 
-    let items: Array<ListItem> = new Array<ListItem>();
+    const items: Array<ListItem> = new Array<ListItem>();
 
     for (let i = 0; i < chapters.length; i++) {
-      let chapter: Chapter = chapters[i];
-      let listItem: ListItem = new ListItem();
+      const chapter: Chapter = chapters[i];
+      const listItem: ListItem = new ListItem();
       listItem.id = chapter.id;
       listItem.label = chapter.label;
       listItem.data = chapter;
@@ -158,7 +168,7 @@ export class IndexComponent implements OnInit, OnDestroy {
 
   private buildChapterListForSelectedIndex(): void {
     this.chapterItems = [];
-    let selectedItem: ListItem = this.indexListComp.getSelectedItem();
+    const selectedItem: ListItem = this.indexListComp.getSelectedItem();
     if (selectedItem && selectedItem.data && selectedItem.data.chapters && selectedItem.data.chapters.length > 1) {
       this._chapterItemsSubject.next(selectedItem.data.chapters);
     }
@@ -172,7 +182,7 @@ export class IndexComponent implements OnInit, OnDestroy {
     if (this.indexListComp) {
       this.indexListComp.selectItemById(index ? index.label : null);
 
-      if (type !== (<any>this.constructor).name) {
+      if (type !== (this.constructor as any).name) {
         this.indexListComp.scrollSelectedIntoView();
       }
 
@@ -188,7 +198,7 @@ export class IndexComponent implements OnInit, OnDestroy {
     if (this.chapterListComp) {
       this.chapterListComp.selectItemById(chapter ? chapter.id : null);
 
-      if (type !== (<any>this.constructor).name) {
+      if (type !== (this.constructor as any).name) {
         this.chapterListComp.scrollSelectedIntoView();
       }
     }
@@ -204,9 +214,9 @@ export class IndexComponent implements OnInit, OnDestroy {
 
   public onIndexItemSelected(item: ListItem): void {
     if (item.data && item.data.chapters && item.data.chapters.length > 1) {
-      this._stateService.selectIndex(item.data, (<any>this.constructor).name);
+      this._stateService.selectIndex(item.data, (this.constructor as any).name);
     } else {
-      this._stateService.selectIndex(item.data, (<any>this.constructor).name, false);
+      this._stateService.selectIndex(item.data, (this.constructor as any).name, false);
       this._selectChapterSubject.next(item.data.chapters[0]);
     }
   }
@@ -220,7 +230,7 @@ export class IndexComponent implements OnInit, OnDestroy {
   }
 
   public onChapterItemSelected(item: ListItem): void {
-    this._stateService.selectChapter(item.data, (<any>this.constructor).name);
+    this._stateService.selectChapter(item.data, (this.constructor as any).name);
   }
 
   public filter(): void {

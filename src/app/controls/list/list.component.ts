@@ -1,7 +1,7 @@
 import { Component, ChangeDetectorRef, EventEmitter, Input, Output, QueryList, ViewChildren } from '@angular/core';
 
 import { ListItemComponent } from './listitem.component';
-import { ListItem } from './listitem.model';
+import { ListItem } from './listitem';
 
 @Component({
   selector: 'hlp-list',
@@ -10,16 +10,29 @@ import { ListItem } from './listitem.model';
 })
 export class ListComponent {
 
-  @Input() items: Array<ListItem>;
-  @Input() style: any;
-  @Input() styleClass: any;
-  @Input() checkIsItemSelected: (selected: ListItem, item: ListItem) => boolean;
-  @Input() checkCanSelectItem: (item: ListItem) => boolean;
-  @Input() showChildren: boolean = true;
+  @Input()
+  public items: Array<ListItem>;
 
-  @Output() onItemSelected: EventEmitter<ListItem> = new EventEmitter<ListItem>();
+  @Input()
+  public style: any;
 
-  @ViewChildren(ListItemComponent) itemComps: QueryList<ListItemComponent>;
+  @Input()
+  public styleClass: any;
+
+  @Input()
+  public checkIsItemSelected: (selected: ListItem, item: ListItem) => boolean;
+
+  @Input()
+  public checkCanSelectItem: (item: ListItem) => boolean;
+
+  @Input()
+  public showChildren: boolean = true;
+
+  @Output()
+  public onItemSelected: EventEmitter<ListItem> = new EventEmitter<ListItem>();
+
+  @ViewChildren(ListItemComponent)
+  public itemComps: QueryList<ListItemComponent>;
 
   private _selectedItem: ListItem;
 
@@ -63,11 +76,11 @@ export class ListComponent {
   private findItemByIdRecursive(items: Array<ListItem>, id: string): ListItem {
     if (items && items.length && id) {
       for (let i = 0; i < items.length; i++) {
-        let item: ListItem = items[i];
+        const item: ListItem = items[i];
         if (item.id === id) {
           return item;
         } else if (item.children && item.children.length) {
-          let child: ListItem = this.findItemByIdRecursive(item.children, id);
+          const child: ListItem = this.findItemByIdRecursive(item.children, id);
           if (child) {
             return child;
           }

@@ -1,0 +1,35 @@
+* {
+  outline: none;
+  box-sizing: border-box;
+}
+
+html {
+  height: 100%;
+  font-size: 62.5%;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+body {
+  height: 100%;
+  display: flex;
+  overflow: hidden;
+  font-size: 1.4rem;
+  line-height: 2rem;
+  color: #333;
+  background-color: #fff;
+}
+
+.hlp-app-loading {
+  justify-content: center;
+  align-items: center;
+  font-size: 3.5rem;
+}
+
+.flex {
+  flex: 1;
+  display: flex;
+}
+
+.overflow {
+  overflow: auto;
+}

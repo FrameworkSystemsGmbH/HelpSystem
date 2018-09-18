@@ -1,4 +1,4 @@
-import { Index } from '../models';
+import { Index } from 'app/models';
 
 export class SelectedIndexChangedEventArgs {
 

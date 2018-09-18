@@ -1,13 +1,16 @@
 import { Component, HostListener, OnInit, OnDestroy, NgZone, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Http } from '@angular/http';
+import { Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
 
-import { ISubscription } from 'rxjs/Subscription';
-
-import { ContentComponent, ViewerComponent } from './components';
-import { SelectedTabChangedEventArgs } from './eventargs';
-import { ChapterService, StateService } from './services';
-import { Chapter, Meta, Tab } from './models';
+import { ContentComponent } from 'app/components/content/content.component';
+import { ViewerComponent } from 'app/components/viewer/viewer.component';
+import { ChapterService } from 'app/services/chapter.service';
+import { StateService } from 'app/services/state.service';
+import { SelectedTabChangedEventArgs } from 'app/eventargs/selectedtabchanged.eventargs';
+import { Tab } from 'app/models/tab';
+import { Meta } from 'app/models/meta';
 
 @Component({
   selector: 'hlp-app',
@@ -16,14 +19,14 @@ import { Chapter, Meta, Tab } from './models';
 })
 export class AppComponent implements OnInit, OnDestroy {
 
-  @ViewChild('contentComp') contentComp: ContentComponent;
-  @ViewChild('viewerComp') viewerComp: ViewerComponent;
+  @ViewChild('contentComp') public contentComp: ContentComponent;
+  @ViewChild('viewerComp') public viewerComp: ViewerComponent;
 
-  private _initMetaSub: ISubscription;
-  private _selectedTabSub: ISubscription;
+  private _initMetaSub: Subscription;
+  private _selectedTabSub: Subscription;
 
   public selectedTab: Tab;
-  tabType = Tab;
+  public tabType = Tab;
 
   constructor(
     private _http: Http,
@@ -39,15 +42,15 @@ export class AppComponent implements OnInit, OnDestroy {
       this.selectedTab = args.tab;
     });
 
-    this._initMetaSub = this._http.get('files/json/meta.json')
-      .map(res => <Meta>res.json())
-      .subscribe(meta => {
-        this._title.setTitle(meta.title);
-      });
+    this._initMetaSub = this._http.get('files/json/meta.json').pipe(
+      map(res => res.json() as Meta)
+    ).subscribe(meta => {
+      this._title.setTitle(meta.title);
+    });
 
     this.loadReferencedChapter();
 
-    (<any>window).appComponentRef = {
+    (window as any).appComponentRef = {
       zone: this._zone,
       comp: this
     };
@@ -74,7 +77,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   private loadReferencedChapter(): void {
-    let reference: string = this.getUrlParameter('load');
+    const reference: string = this.getUrlParameter('load');
 
     if (reference && reference.trim()) {
       this._chapterService.findChaptersByReference(reference).subscribe(chapter => {
@@ -94,12 +97,12 @@ export class AppComponent implements OnInit, OnDestroy {
       return null;
     }
 
-    let url: string = window.location.href;
+    const url: string = window.location.href;
 
-    name = name.trim().replace(/[\[\]]/g, '\\$&');
+    const nameTrimmed: string = name.trim().replace(/[\[\]]/g, '\\$&');
 
-    let regex: RegExp = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)');
-    let results: RegExpExecArray = regex.exec(url);
+    const regex: RegExp = new RegExp('[?&]' + nameTrimmed + '(=([^&#]*)|&|#|$)');
+    const results: RegExpExecArray = regex.exec(url);
 
     if (!results) {
       return null;

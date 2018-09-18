@@ -1,10 +1,9 @@
-import { ApplicationRef, ComponentRef, Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
 
-import { ISubscription } from 'rxjs/Subscription';
-
-import { SelectedTabChangedEventArgs } from '../../eventargs';
-import { StateService } from '../../services';
-import { Tab } from '../../models';
+import { StateService } from 'app/services/state.service';
+import { SelectedTabChangedEventArgs } from 'app/eventargs/selectedtabchanged.eventargs';
+import { Tab } from 'app/models/tab';
 
 @Component({
   selector: 'hlp-navigation',
@@ -13,15 +12,16 @@ import { Tab } from '../../models';
 })
 export class NavigationComponent implements OnInit, OnDestroy {
 
-  @Input() style: any;
-  @Input() styleClass: any;
+  @Input()
+  public style: any;
+
+  @Input()
+  public styleClass: any;
 
   private _selectedTab: Tab;
-  private _selectedTabSub: ISubscription;
+  private _selectedTabSub: Subscription;
 
-  constructor(
-    private _application: ApplicationRef,
-    private _stateService: StateService) { }
+  constructor(private _stateService: StateService) { }
 
   public ngOnInit(): void {
     this._selectedTab = this._stateService.getSelectedTab();

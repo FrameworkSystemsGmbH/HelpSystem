@@ -1,18 +1,14 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 
-import {
-  SelectedChapterChangedEventArgs,
-  SelectedIndexChangedEventArgs,
-  SelectedTabChangedEventArgs
-} from '../eventargs';
+import { SelectedChapterChangedEventArgs } from 'app/eventargs/selectedchapterchanged.eventargs';
+import { SelectedIndexChangedEventArgs } from 'app/eventargs/selectedindexchanged.eventargs';
+import { SelectedTabChangedEventArgs } from 'app/eventargs/selectedtabchanged.eventargs';
 
-import {
-  Chapter,
-  Index,
-  State,
-  Tab
-} from '../models';
+import { Chapter } from 'app/models/chapter';
+import { Index } from 'app/models';
+import { Tab } from 'app/models/tab';
+import { State } from 'app/models/state';
 
 @Injectable()
 export class StateService {
@@ -68,8 +64,8 @@ export class StateService {
   }
 
   public selectIndex(index: Index, componentType: any = null, pushState: boolean = true): void {
-    let indexLabel: string = index ? index.label : null;
-    let selectedLabel: string = this._selectedIndex ? this._selectedIndex.label : null;
+    const indexLabel: string = index ? index.label : null;
+    const selectedLabel: string = this._selectedIndex ? this._selectedIndex.label : null;
 
     if (indexLabel !== selectedLabel) {
       this._selectedIndex = index;
@@ -100,7 +96,7 @@ export class StateService {
 
   private pushState(): void {
     if (window.history) {
-      let state: State = new State();
+      const state: State = new State();
       state.tab = this._selectedTab;
       state.chapter = this._selectedChapter;
       state.index = this._selectedIndex;

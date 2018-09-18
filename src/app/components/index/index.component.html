@@ -1,7 +1,7 @@
 <div class="hlp-index flex" [ngStyle]="style" [ngClass]="styleClass">
   <div class="hlp-index-filter">
     <div class="hlp-index-filter-txt">
-      <input #txtFilter type="text" class="form-control" placeholder="Filter" [(ngModel)]="filterTerm" (keyup.enter)="filter()">
+      <input #txtFilter type="text" placeholder="Filter" [(ngModel)]="filterTerm" (keyup.enter)="filter()">
     </div>
     <div class="hlp-index-filter-btn">
       <button class="btn btn-default btn-filter" (click)="filter()"><i class="fa fa-fw fa-filter"></i></button>
@@ -19,7 +19,7 @@
     </div>
   </div>
   <div class="hlp-index-chapters" *ngIf="!loading && chapterItems?.length > 0">
-    <div class="hlp-index-chapters-headline gradientsilver">Select Chapter</div>
+    <div class="hlp-index-chapters-headline">Select Chapter</div>
     <div class="hlp-index-list overflow">
       <div class="hlp-index-list-inner">
         <hlp-list #chapterListComp [items]="chapterItems" [checkIsItemSelected]="checkIsChapterSelected" [checkCanSelectItem]="checkCanSelectChapter" [showChildren]="false" (onItemSelected)="onChapterItemSelected($event)"></hlp-list>

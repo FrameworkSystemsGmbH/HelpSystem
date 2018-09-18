@@ -1,7 +1,7 @@
 import { Component, ElementRef, forwardRef, Inject, Input, QueryList, ViewChild, ViewChildren } from '@angular/core';
 
 import { ListComponent } from './list.component';
-import { ListItem } from './listitem.model';
+import { ListItem } from './listitem';
 
 @Component({
   selector: 'hlp-listitem',
@@ -10,12 +10,16 @@ import { ListItem } from './listitem.model';
 })
 export class ListItemComponent {
 
-  @Input() item: ListItem;
+  @Input()
+  public item: ListItem;
 
-  @ViewChild('itemRef') itemRef: ElementRef;
-  @ViewChildren(ListItemComponent) itemComps: QueryList<ListItemComponent>;
+  @ViewChild('itemRef')
+  public itemRef: ElementRef;
 
-  constructor( @Inject(forwardRef(() => ListComponent)) private _list: ListComponent) { }
+  @ViewChildren(ListItemComponent)
+  public itemComps: QueryList<ListItemComponent>;
+
+  constructor(@Inject(forwardRef(() => ListComponent)) private _list: ListComponent) { }
 
   public onClick(event: any): void {
     this.select();

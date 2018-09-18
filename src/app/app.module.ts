@@ -5,55 +5,28 @@ import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
 
-import {
-  ListComponent,
-  ListItemComponent,
-  TreeComponent,
-  TreeNodeComponent
-} from './controls';
-
-import {
-  ContentComponent,
-  IndexComponent,
-  NavigationComponent,
-  SearchComponent,
-  ViewerComponent
-} from './components';
-
-import {
-  ChapterService,
-  IndexService,
-  SearchService,
-  StateService
-} from './services';
+import { ALL_COMPONENTS } from './components/_all.components';
+import { ALL_CONTROLS } from './controls/_all.controls';
+import { ALL_SERVICES } from './services/_all.services';
 
 @NgModule({
   imports: [
     BrowserModule,
     FormsModule,
-    HttpModule,
+    HttpModule
   ],
   declarations: [
     AppComponent,
-    ListComponent,
-    ListItemComponent,
-    TreeComponent,
-    TreeNodeComponent,
-    ContentComponent,
-    IndexComponent,
-    NavigationComponent,
-    SearchComponent,
-    ViewerComponent
+    ALL_CONTROLS,
+    ALL_COMPONENTS
   ],
   providers: [
     Title,
-    ChapterService,
-    IndexService,
-    SearchService,
-    StateService
+    ALL_SERVICES
   ],
   bootstrap: [
     AppComponent
   ]
 })
+// tslint:disable-next-line:no-unnecessary-class
 export class AppModule { }

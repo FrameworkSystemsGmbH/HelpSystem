@@ -1,4 +1,4 @@
-import { Tab } from '../models';
+import { Tab } from 'app/models/tab';
 
 export class SelectedTabChangedEventArgs {
 

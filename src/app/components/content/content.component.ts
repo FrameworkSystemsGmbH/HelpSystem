@@ -1,11 +1,13 @@
 import { Component, ChangeDetectorRef, Input, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
 
-import { ISubscription } from 'rxjs/Subscription';
-
-import { TreeComponent, TreeNode } from '../../controls/tree';
-import { SelectedChapterChangedEventArgs, SelectedTabChangedEventArgs } from '../../eventargs';
-import { ChapterService, StateService } from '../../services';
-import { Chapter, Tab } from '../../models';
+import { TreeComponent } from 'app/controls/tree/tree.component';
+import { TreeNode } from 'app/controls/tree/treenode';
+import { ChapterService } from 'app/services/chapter.service';
+import { StateService } from 'app/services/state.service';
+import { SelectedChapterChangedEventArgs } from 'app/eventargs/selectedchapterchanged.eventargs';
+import { Chapter } from 'app/models/chapter';
 
 @Component({
   selector: 'hlp-content',
@@ -14,16 +16,16 @@ import { Chapter, Tab } from '../../models';
 })
 export class ContentComponent implements OnInit, OnDestroy {
 
-  @Input() style: any;
-  @Input() styleClass: any;
+  @Input() public style: any;
+  @Input() public styleClass: any;
 
-  @ViewChild('treeComp') treeComp: TreeComponent;
+  @ViewChild('treeComp') public treeComp: TreeComponent;
 
   public initialized: boolean;
   public chapterNodes: Array<TreeNode>;
 
-  private _chapterNodesSub: ISubscription;
-  private _selectedChapterSub: ISubscription;
+  private _chapterNodesSub: Subscription;
+  private _selectedChapterSub: Subscription;
 
   constructor(
     private _changeDetectorRef: ChangeDetectorRef,
@@ -31,13 +33,13 @@ export class ContentComponent implements OnInit, OnDestroy {
     private _stateService: StateService) { }
 
   public ngOnInit(): void {
-    this._chapterNodesSub = this._chapterService.getChapters()
-      .map(chapters => this.buildChapterTree(chapters))
-      .subscribe(nodes => {
-        this.chapterNodes = nodes;
-        this.initialized = true;
-        this.setChapter(this._stateService.getSelectedChapter());
-      });
+    this._chapterNodesSub = this._chapterService.getChapters().pipe(
+      map(chapters => this.buildChapterTree(chapters))
+    ).subscribe(nodes => {
+      this.chapterNodes = nodes;
+      this.initialized = true;
+      this.setChapter(this._stateService.getSelectedChapter());
+    });
 
     this._selectedChapterSub = this._stateService.selectedChapterChanged
       .subscribe((args: SelectedChapterChangedEventArgs) => {
@@ -57,7 +59,7 @@ export class ContentComponent implements OnInit, OnDestroy {
   }
 
   public onNodeSelected(node: TreeNode): void {
-    this._stateService.selectChapter(node ? node.data : null, (<any>this.constructor).name);
+    this._stateService.selectChapter(node ? node.data : null, (this.constructor as any).name);
   }
 
   private buildChapterTree(chapters: Array<Chapter>): Array<TreeNode> {
@@ -65,11 +67,11 @@ export class ContentComponent implements OnInit, OnDestroy {
       return null;
     }
 
-    let nodes: Array<TreeNode> = new Array<TreeNode>();
+    const nodes: Array<TreeNode> = new Array<TreeNode>();
 
     for (let i = 0; i < chapters.length; i++) {
-      let chapter: Chapter = chapters[i];
-      let treeNode: TreeNode = new TreeNode();
+      const chapter: Chapter = chapters[i];
+      const treeNode: TreeNode = new TreeNode();
       treeNode.id = chapter.id;
       treeNode.label = chapter.label;
       treeNode.data = chapter;
@@ -88,7 +90,7 @@ export class ContentComponent implements OnInit, OnDestroy {
     if (this.treeComp) {
       this.treeComp.selectNodeById(chapter ? chapter.id : null);
 
-      if (type !== (<any>this.constructor).name) {
+      if (type !== (this.constructor as any).name) {
         this.scrollSelectedIntoView();
       } else {
         this.treeComp.expandSelectedNode();

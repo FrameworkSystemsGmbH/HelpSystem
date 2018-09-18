@@ -1,4 +1,4 @@
-import { Chapter } from '../models';
+import { Chapter } from 'app/models/chapter';
 
 export class SelectedChapterChangedEventArgs {
 

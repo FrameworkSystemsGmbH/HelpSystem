@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 
 import { TreeNodeComponent } from './treenode.component';
-import { TreeNode } from './treenode.model';
+import { TreeNode } from './treenode';
 
 @Component({
   selector: 'hlp-tree',
@@ -18,17 +18,19 @@ import { TreeNode } from './treenode.model';
 })
 export class TreeComponent {
 
-  @Input() nodes: Array<TreeNode>;
-  @Input() iconLeaf: string;
-  @Input() iconExpanded: string;
-  @Input() iconCollapsed: string;
-  @Input() style: any;
-  @Input() styleClass: any;
-  @Input() checkIsNodeSelected: (selected: TreeNode, node: TreeNode) => boolean;
+  @Input() public nodes: Array<TreeNode>;
+  @Input() public iconLeaf: string;
+  @Input() public iconExpanded: string;
+  @Input() public iconCollapsed: string;
+  @Input() public style: any;
+  @Input() public styleClass: any;
+  @Input() public checkIsNodeSelected: (selected: TreeNode, node: TreeNode) => boolean;
 
-  @Output() onNodeSelected: EventEmitter<TreeNode> = new EventEmitter<TreeNode>();
+  @Output()
+  public onNodeSelected: EventEmitter<TreeNode> = new EventEmitter<TreeNode>();
 
-  @ViewChildren(TreeNodeComponent) nodeComps: QueryList<TreeNodeComponent>;
+  @ViewChildren(TreeNodeComponent)
+  public nodeComps: QueryList<TreeNodeComponent>;
 
   private _selectedNode: TreeNode;
 
@@ -58,18 +60,18 @@ export class TreeComponent {
   public collapseAll(): void {
     if (this.nodeComps && this.nodeComps.length) {
       this.nodeComps.forEach((nodeComp: TreeNodeComponent) => {
-        return nodeComp.collapseAll();
+        nodeComp.collapseAll();
       });
     }
   }
 
   public expandToSelectedNode(): void {
-    let idPath: Array<string> = this.getNodeIdPath(this._selectedNode);
+    const idPath: Array<string> = this.getNodeIdPath(this._selectedNode);
     if (this.nodeComps && this.nodeComps.length && idPath && idPath.length) {
-      let idToExpand: string = idPath[0];
-      let nodeCompsArr: Array<TreeNodeComponent> = this.nodeComps.toArray();
+      const idToExpand: string = idPath[0];
+      const nodeCompsArr: Array<TreeNodeComponent> = this.nodeComps.toArray();
       for (let i = 0; i < nodeCompsArr.length; i++) {
-        let nodeComp: TreeNodeComponent = nodeCompsArr[i];
+        const nodeComp: TreeNodeComponent = nodeCompsArr[i];
         if (nodeComp.node.id === idToExpand) {
           if (nodeComp.isLeaf()) {
             return;
@@ -84,7 +86,7 @@ export class TreeComponent {
           this._changeDetectorRef.reattach();
 
           if (idPath.length > 1) {
-            let remainingIds = idPath.splice(1);
+            const remainingIds = idPath.splice(1);
             nodeComp.expandToSelectedNode(remainingIds);
           }
 
@@ -113,11 +115,11 @@ export class TreeComponent {
   private findNodeByIdRecursive(nodes: Array<TreeNode>, id: string): TreeNode {
     if (nodes && nodes.length && id) {
       for (let i = 0; i < nodes.length; i++) {
-        let node: TreeNode = nodes[i];
+        const node: TreeNode = nodes[i];
         if (node.id === id) {
           return node;
         } else if (node.children && node.children.length) {
-          let child: TreeNode = this.findNodeByIdRecursive(node.children, id);
+          const child: TreeNode = this.findNodeByIdRecursive(node.children, id);
           if (child) {
             return child;
           }
@@ -133,7 +135,7 @@ export class TreeComponent {
       return null;
     }
 
-    let result: Array<string> = new Array<string>();
+    const result: Array<string> = new Array<string>();
 
     return this.getNodeIdPathRecursive(this.nodes, target, result) ? result.reverse() : null;
   }
@@ -141,7 +143,7 @@ export class TreeComponent {
   private getNodeIdPathRecursive(nodes: Array<TreeNode>, target: TreeNode, result: Array<string>): boolean {
     if (nodes && nodes.length && target) {
       for (let i = 0; i < nodes.length; i++) {
-        let node: TreeNode = nodes[i];
+        const node: TreeNode = nodes[i];
         if (node.id === target.id) {
           result.push(node.id);
           return true;
