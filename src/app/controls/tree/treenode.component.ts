@@ -10,8 +10,8 @@ import {
   ViewChildren
 } from '@angular/core';
 
-import { TreeComponent } from './tree.component';
-import { TreeNode } from './treenode';
+import { TreeComponent } from 'app/controls/tree/tree.component';
+import { TreeNode } from 'app/controls/tree/treenode';
 
 @Component({
   selector: 'hlp-treenode',

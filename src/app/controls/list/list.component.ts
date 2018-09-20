@@ -1,7 +1,7 @@
 import { Component, ChangeDetectorRef, EventEmitter, Input, Output, QueryList, ViewChildren } from '@angular/core';
 
-import { ListItemComponent } from './listitem.component';
-import { ListItem } from './listitem';
+import { ListItemComponent } from 'app/controls/list/listitem.component';
+import { ListItem } from 'app/controls/list/listitem';
 
 @Component({
   selector: 'hlp-list',

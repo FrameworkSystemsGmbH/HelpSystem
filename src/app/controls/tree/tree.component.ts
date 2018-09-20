@@ -1,15 +1,7 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  Input,
-  Output,
-  QueryList,
-  ViewChildren
-} from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, Output, QueryList, ViewChildren } from '@angular/core';
 
-import { TreeNodeComponent } from './treenode.component';
-import { TreeNode } from './treenode';
+import { TreeNodeComponent } from 'app/controls/tree/treenode.component';
+import { TreeNode } from 'app/controls/tree/treenode';
 
 @Component({
   selector: 'hlp-tree',

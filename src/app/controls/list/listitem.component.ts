@@ -1,7 +1,7 @@
 import { Component, ElementRef, forwardRef, Inject, Input, QueryList, ViewChild, ViewChildren } from '@angular/core';
 
-import { ListComponent } from './list.component';
-import { ListItem } from './listitem';
+import { ListComponent } from 'app/controls/list/list.component';
+import { ListItem } from 'app/controls/list/listitem';
 
 @Component({
   selector: 'hlp-listitem',

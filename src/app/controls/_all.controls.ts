@@ -1,7 +1,7 @@
-import { ListComponent } from './list/list.component';
-import { ListItemComponent } from './list/listitem.component';
-import { TreeComponent } from './tree/tree.component';
-import { TreeNodeComponent } from './tree/treenode.component';
+import { ListComponent } from 'app/controls/list/list.component';
+import { ListItemComponent } from 'app/controls/list/listitem.component';
+import { TreeComponent } from 'app/controls/tree/tree.component';
+import { TreeNodeComponent } from 'app/controls/tree/treenode.component';
 
 export const ALL_CONTROLS = [
   ListComponent,

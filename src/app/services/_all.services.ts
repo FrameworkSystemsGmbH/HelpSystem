@@ -1,7 +1,7 @@
-import { ChapterService } from './chapter.service';
-import { IndexService } from './index.service';
-import { SearchService } from './search.service';
-import { StateService } from './state.service';
+import { ChapterService } from 'app/services/chapter.service';
+import { IndexService } from 'app/services/index.service';
+import { SearchService } from 'app/services/search.service';
+import { StateService } from 'app/services/state.service';
 
 export const ALL_SERVICES = [
   ChapterService,

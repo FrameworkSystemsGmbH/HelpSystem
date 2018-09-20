@@ -1,4 +1,4 @@
-import { Chapter } from './chapter';
+import { Chapter } from 'app/models/chapter';
 
 export class Dictionary {
 

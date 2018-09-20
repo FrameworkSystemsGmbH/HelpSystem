@@ -3,11 +3,11 @@ import { BrowserModule, Title } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
-import { AppComponent } from './app.component';
+import { AppComponent } from 'app/app.component';
 
-import { ALL_COMPONENTS } from './components/_all.components';
-import { ALL_CONTROLS } from './controls/_all.controls';
-import { ALL_SERVICES } from './services/_all.services';
+import { ALL_COMPONENTS } from 'app/components/_all.components';
+import { ALL_CONTROLS } from 'app/controls/_all.controls';
+import { ALL_SERVICES } from 'app/services/_all.services';
 
 @NgModule({
   imports: [
