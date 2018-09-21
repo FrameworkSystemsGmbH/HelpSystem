@@ -46,7 +46,7 @@ export class TreeComponent implements OnInit, OnDestroy {
   }
 
   public selectNodeById(id: string) {
-    this._treeService.selectNode(this.findNodeByIdRecursive(this.nodes, id));
+    this._treeService.selectNode(this.findNodeByIdRecursive(this.nodes, id), false);
   }
 
   public getSelectedNode(): TreeNode {
