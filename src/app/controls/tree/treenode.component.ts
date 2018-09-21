@@ -1,16 +1,6 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  ElementRef,
-  forwardRef,
-  Inject,
-  Input,
-  QueryList,
-  ViewChild,
-  ViewChildren
-} from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, forwardRef, Inject, Input, QueryList, ViewChild, ViewChildren } from '@angular/core';
 
-import { TreeComponent } from 'app/controls/tree/tree.component';
+import { TreeService } from 'app/controls/tree/tree.service';
 import { TreeNode } from 'app/controls/tree/treenode';
 
 @Component({
@@ -34,7 +24,7 @@ export class TreeNodeComponent {
   public expanded: boolean = false;
 
   constructor(
-    @Inject(forwardRef(() => TreeComponent)) private _tree: TreeComponent,
+    private _treeService: TreeService,
     private _changeDetectorRef: ChangeDetectorRef
   ) { }
 
@@ -42,12 +32,12 @@ export class TreeNodeComponent {
     let icon;
 
     if (this.isLeaf()) {
-      icon = this.node.iconLeaf ? this.node.iconLeaf : this._tree.iconLeaf;
+      icon = this.node.iconLeaf ? this.node.iconLeaf : this._treeService.getIconLeaf();
     } else {
       if (this.expanded) {
-        icon = this.node.iconExpanded ? this.node.iconExpanded : this._tree.iconExpanded;
+        icon = this.node.iconExpanded ? this.node.iconExpanded : this._treeService.getIconExpanded();
       } else {
-        icon = this.node.iconCollapsed ? this.node.iconCollapsed : this._tree.iconCollapsed;
+        icon = this.node.iconCollapsed ? this.node.iconCollapsed : this._treeService.getIconCollapsed();
       }
     }
 
@@ -64,7 +54,7 @@ export class TreeNodeComponent {
 
   public select(): void {
     if (!this.isSelected()) {
-      this._tree.selectNodeInternal(this.node);
+      this._treeService.selectNode(this.node);
     }
   }
 
@@ -77,7 +67,7 @@ export class TreeNodeComponent {
   }
 
   public isSelected(): boolean {
-    return this._tree.isNodeSelected(this.node);
+    return this._treeService.checkIsNodeSelected(this.node);
   }
 
   public collapseAll(): void {

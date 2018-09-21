@@ -213,6 +213,7 @@ export class IndexComponent implements OnInit, OnDestroy {
   }
 
   public onIndexItemSelected(item: ListItem): void {
+    console.log(item);
     if (item.data && item.data.chapters && item.data.chapters.length > 1) {
       this._stateService.selectIndex(item.data, (this.constructor as any).name);
     } else {

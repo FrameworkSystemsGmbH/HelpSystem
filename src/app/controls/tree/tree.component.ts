@@ -1,14 +1,17 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, Output, QueryList, ViewChildren } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, OnDestroy, Output, QueryList, ViewChildren } from '@angular/core';
+import { Subscription } from 'rxjs';
 
+import { TreeService } from 'app/controls/tree/tree.service';
 import { TreeNodeComponent } from 'app/controls/tree/treenode.component';
 import { TreeNode } from 'app/controls/tree/treenode';
 
 @Component({
   selector: 'hlp-tree',
   templateUrl: './tree.component.html',
-  styleUrls: ['./tree.component.scss']
+  styleUrls: ['./tree.component.scss'],
+  providers: [TreeService]
 })
-export class TreeComponent {
+export class TreeComponent implements OnInit, OnDestroy {
 
   @Input() public nodes: Array<TreeNode>;
   @Input() public iconLeaf: string;
@@ -24,29 +27,30 @@ export class TreeComponent {
   @ViewChildren(TreeNodeComponent)
   public nodeComps: QueryList<TreeNodeComponent>;
 
-  private _selectedNode: TreeNode;
+  private _onNodeSelectedSub: Subscription;
 
-  constructor(private _changeDetectorRef: ChangeDetectorRef) { }
+  constructor(
+    private _treeService: TreeService,
+    private _changeDetectorRef: ChangeDetectorRef
+  ) { }
 
-  public getSelectedNode(): TreeNode {
-    return this._selectedNode;
+  public ngOnInit(): void {
+    this._treeService.Initialize(this.iconLeaf, this.iconExpanded, this.iconCollapsed, this.checkIsNodeSelected);
+    this._onNodeSelectedSub = this._treeService.onNodeSelected.subscribe((node: TreeNode) => this.onNodeSelected.emit(node));
   }
 
-  public selectNodeInternal(node: TreeNode): void {
-    this.selectNode(node);
-    this.onNodeSelected.emit(node);
-  }
-
-  public selectNode(node: TreeNode): void {
-    this._selectedNode = node;
+  public ngOnDestroy(): void {
+    if (this._onNodeSelectedSub) {
+      this._onNodeSelectedSub.unsubscribe();
+    }
   }
 
   public selectNodeById(id: string) {
-    this.selectNode(this.findNodeByIdRecursive(this.nodes, id));
+    this._treeService.selectNode(this.findNodeByIdRecursive(this.nodes, id));
   }
 
-  public isNodeSelected(node: TreeNode): boolean {
-    return this.checkIsNodeSelected && this.checkIsNodeSelected(this._selectedNode, node);
+  public getSelectedNode(): TreeNode {
+    return this._treeService.getSelectedNode();
   }
 
   public collapseAll(): void {
@@ -58,7 +62,7 @@ export class TreeComponent {
   }
 
   public expandToSelectedNode(): void {
-    const idPath: Array<string> = this.getNodeIdPath(this._selectedNode);
+    const idPath: Array<string> = this.getNodeIdPath(this._treeService.getSelectedNode());
     if (this.nodeComps && this.nodeComps.length && idPath && idPath.length) {
       const idToExpand: string = idPath[0];
       const nodeCompsArr: Array<TreeNodeComponent> = this.nodeComps.toArray();

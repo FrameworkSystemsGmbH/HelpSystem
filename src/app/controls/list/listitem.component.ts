@@ -1,6 +1,6 @@
-import { Component, ElementRef, forwardRef, Inject, Input, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { Component, ElementRef, Input, QueryList, ViewChild, ViewChildren } from '@angular/core';
 
-import { ListComponent } from 'app/controls/list/list.component';
+import { ListService } from 'app/controls/list/list.service';
 import { ListItem } from 'app/controls/list/listitem';
 
 @Component({
@@ -19,32 +19,24 @@ export class ListItemComponent {
   @ViewChildren(ListItemComponent)
   public itemComps: QueryList<ListItemComponent>;
 
-  constructor(@Inject(forwardRef(() => ListComponent)) private _list: ListComponent) { }
+  constructor(private listService: ListService) { }
 
-  public onClick(event: any): void {
-    this.select();
+  public canSelect(): boolean {
+    return this.listService.checkCanSelectItem(this.item);
+  }
+
+  public isSelected(): boolean {
+    return this.listService.checkIsItemSelected(this.item);
   }
 
   public select(): void {
     if (!this.isSelected() && this.canSelect()) {
-      this._list.selectItemInternal(this.item);
+      this.listService.selectItem(this.item);
     }
   }
 
-  public isSelected(): boolean {
-    return this._list.isItemSelected(this.item);
-  }
-
-  public canSelect(): boolean {
-    return this._list.canSelectItem(this.item);
-  }
-
-  public showChildren(): boolean {
-    return this._list.showChildren;
-  }
-
   public scrollSelectedIntoView(): boolean {
-    if (this.isSelected()) {
+    if (this.isSelected) {
       this.itemRef.nativeElement.scrollIntoView(true);
       return true;
     }

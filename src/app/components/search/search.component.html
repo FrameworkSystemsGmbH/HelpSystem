@@ -18,7 +18,7 @@
   </div>
   <div class="hlp-search-list overflow" *ngIf="!searching && chapterItems != null">
     <div class="hlp-search-list-inner">
-      <hlp-list #listComp [items]="chapterItems" [checkIsItemSelected]="checkIsItemSelected" [checkCanSelectItem]="checkCanSelectChapter" [showChildren]="false" (onItemSelected)="onItemSelected($event)"></hlp-list>
+      <hlp-list #listComp [items]="chapterItems" [checkIsItemSelected]="checkIsItemSelected" [checkCanSelectItem]="checkCanSelectChapter" (onItemSelected)="onItemSelected($event)"></hlp-list>
     </div>
   </div>
 </div>
