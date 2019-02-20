@@ -1,5 +1,6 @@
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, OnDestroy, Output, QueryList, ViewChildren } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 
 import { TreeService } from 'app/controls/tree/tree.service';
 import { TreeNodeComponent } from 'app/controls/tree/treenode.component';
@@ -14,9 +15,9 @@ import { TreeNode } from 'app/controls/tree/treenode';
 export class TreeComponent implements OnInit, OnDestroy {
 
   @Input() public nodes: Array<TreeNode>;
-  @Input() public iconLeaf: string;
-  @Input() public iconExpanded: string;
-  @Input() public iconCollapsed: string;
+  @Input() public iconLeaf: IconDefinition;
+  @Input() public iconExpanded: IconDefinition;
+  @Input() public iconCollapsed: IconDefinition;
   @Input() public style: any;
   @Input() public styleClass: any;
   @Input() public checkIsNodeSelected: (selected: TreeNode, node: TreeNode) => boolean;

@@ -1,4 +1,5 @@
 import { Subject } from 'rxjs';
+import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 
 import { TreeNode } from 'app/controls/tree/treenode';
 
@@ -6,18 +7,18 @@ export class TreeService {
 
   private _selectedNode: TreeNode;
 
-  private _iconLeaf: string;
-  private _iconExpanded: string;
-  private _iconCollapsed: string;
+  private _iconLeaf: IconDefinition;
+  private _iconExpanded: IconDefinition;
+  private _iconCollapsed: IconDefinition;
 
   private _checkIsNodeSelected: (selected: TreeNode, node: TreeNode) => boolean;
 
   public onNodeSelected: Subject<TreeNode>;
 
   public Initialize(
-    iconLeaf: string,
-    iconExpanded: string,
-    iconCollapsed: string,
+    iconLeaf: IconDefinition,
+    iconExpanded: IconDefinition,
+    iconCollapsed: IconDefinition,
     checkIsNodeSelected: (selected: TreeNode, node: TreeNode) => boolean
   ): void {
     this._iconLeaf = iconLeaf;
@@ -41,15 +42,15 @@ export class TreeService {
     }
   }
 
-  public getIconLeaf(): string {
+  public getIconLeaf(): IconDefinition {
     return this._iconLeaf;
   }
 
-  public getIconExpanded(): string {
+  public getIconExpanded(): IconDefinition {
     return this._iconExpanded;
   }
 
-  public getIconCollapsed(): string {
+  public getIconCollapsed(): IconDefinition {
     return this._iconCollapsed;
   }
 

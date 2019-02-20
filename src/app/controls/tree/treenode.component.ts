@@ -1,4 +1,5 @@
 import { ChangeDetectorRef, Component, ElementRef, forwardRef, Inject, Input, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 
 import { TreeService } from 'app/controls/tree/tree.service';
 import { TreeNode } from 'app/controls/tree/treenode';
@@ -9,8 +10,6 @@ import { TreeNode } from 'app/controls/tree/treenode';
   styleUrls: ['./treenode.component.scss']
 })
 export class TreeNodeComponent {
-
-  private static ICON_CLASS: string = 'hlp-treenode-icon fa fa-fw';
 
   @Input()
   public node: TreeNode;
@@ -28,8 +27,8 @@ export class TreeNodeComponent {
     private _changeDetectorRef: ChangeDetectorRef
   ) { }
 
-  public getIcon(): string {
-    let icon;
+  public getIcon(): IconDefinition {
+    let icon: IconDefinition = null;
 
     if (this.isLeaf()) {
       icon = this.node.iconLeaf ? this.node.iconLeaf : this._treeService.getIconLeaf();
@@ -41,9 +40,7 @@ export class TreeNodeComponent {
       }
     }
 
-    if (icon) {
-      return TreeNodeComponent.ICON_CLASS + ' ' + icon;
-    }
+    return icon;
   }
 
   public onClick(event: any): void {

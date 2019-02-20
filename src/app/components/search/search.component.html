@@ -4,17 +4,19 @@
       <input #txtSearch type="text" class="form-control" placeholder="Search" [(ngModel)]="searchTerm" (keyup.enter)="search()">
     </div>
     <div class="hlp-search-form-btn">
-      <button class="btn btn-default btn-search" (click)="search()"><i class="fa fa-fw fa-search"></i></button>
+      <button class="btn btn-default btn-search" (click)="search()">
+        <fa-icon [icon]="iconSearch" [fixedWidth]="true"></fa-icon>
+      </button>
     </div>
   </div>
   <div class="hlp-search-info flex" *ngIf="!searching && chapterItems == null && searchTermLast == null">
-    <i class="fa fa-fw fa-search fa-4x" style="opacity: 0.2;"></i>
+      <fa-icon [icon]="iconSearch" [fixedWidth]="true" size="4x" style="opacity: 0.2;"></fa-icon>
   </div>
   <div class="hlp-search-info flex" *ngIf="searching">
-    <i class="fa fa-fw fa-cog fa-spin fa-2x"></i><strong>Searching</strong>
+      <fa-icon [icon]="iconCog" [fixedWidth]="true" [spin]="true" size="2x"></fa-icon><strong>Searching</strong>
   </div>
   <div class="hlp-search-info hlp-search-noresults flex" *ngIf="!searching && chapterItems == null && searchTermLast != null">
-    <i class="fa fa-fw fa-exclamation-circle fa-2x"></i>No Results
+      <fa-icon [icon]="iconWarning" [fixedWidth]="true" size="2x"></fa-icon>No Results
   </div>
   <div class="hlp-search-list overflow" *ngIf="!searching && chapterItems != null">
     <div class="hlp-search-list-inner">

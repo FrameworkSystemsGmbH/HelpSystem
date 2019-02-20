@@ -1,6 +1,8 @@
 import { Component, ChangeDetectorRef, Input, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
+import { faCog, faBook, faFolder, faFolderOpen } from '@fortawesome/free-solid-svg-icons';
 
 import { TreeComponent } from 'app/controls/tree/tree.component';
 import { TreeNode } from 'app/controls/tree/treenode';
@@ -20,6 +22,11 @@ export class ContentComponent implements OnInit, OnDestroy {
   @Input() public styleClass: any;
 
   @ViewChild('treeComp') public treeComp: TreeComponent;
+
+  public iconCog: IconDefinition = faCog;
+  public iconLeaf: IconDefinition = faBook;
+  public iconFolder: IconDefinition = faFolder;
+  public iconFolderOpen: IconDefinition = faFolderOpen;
 
   public initialized: boolean;
   public chapterNodes: Array<TreeNode>;

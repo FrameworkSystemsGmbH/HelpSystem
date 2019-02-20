@@ -1,5 +1,7 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
+import { faFile, faList, faSearch, faPrint } from '@fortawesome/free-solid-svg-icons';
 
 import { StateService } from 'app/services/state.service';
 import { SelectedTabChangedEventArgs } from 'app/eventargs/selectedtabchanged.eventargs';
@@ -17,6 +19,11 @@ export class NavigationComponent implements OnInit, OnDestroy {
 
   @Input()
   public styleClass: any;
+
+  public iconContents: IconDefinition = faFile;
+  public iconIndex: IconDefinition = faList;
+  public iconSearch: IconDefinition = faSearch;
+  public iconPrint: IconDefinition = faPrint;
 
   private _selectedTab: Tab;
   private _selectedTabSub: Subscription;

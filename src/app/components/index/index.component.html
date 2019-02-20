@@ -4,14 +4,16 @@
       <input #txtFilter type="text" placeholder="Filter" [(ngModel)]="filterTerm" (keyup.enter)="filter()">
     </div>
     <div class="hlp-index-filter-btn">
-      <button class="btn btn-default btn-filter" (click)="filter()"><i class="fa fa-fw fa-filter"></i></button>
+      <button class="btn btn-default btn-filter" (click)="filter()">
+        <fa-icon [icon]="iconFilter" [fixedWidth]="true"></fa-icon>
+      </button>
     </div>
   </div>
   <div class="hlp-index-info flex" *ngIf="loading">
-    <i class="fa fa-fw fa-cog fa-spin fa-2x"></i><strong>Loading</strong>
+    <fa-icon [icon]="iconCog" [fixedWidth]="true" [spin]="true" size="2x"></fa-icon><strong>Loading</strong>
   </div>
   <div class="hlp-index-info hlp-index-noresults flex" *ngIf="initialized && !loading && indexItems == null">
-    <i class="fa fa-fw fa-exclamation-circle fa-2x"></i>No Results
+    <fa-icon [icon]="iconWarning" [fixedWidth]="true" size="2x"></fa-icon>No Results
   </div>
   <div class="hlp-index-list overflow" *ngIf="!loading && indexItems != null">
     <div class="hlp-index-list-inner">

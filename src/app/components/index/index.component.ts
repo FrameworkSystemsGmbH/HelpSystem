@@ -1,6 +1,8 @@
 import { ChangeDetectorRef, Component, ElementRef, Input, OnInit, OnDestroy, Renderer, ViewChild } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
 import { distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
+import { faCog, faFilter, faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 
 import { ListComponent } from 'app/controls/list/list.component';
 import { ListItem } from 'app/controls/list/listitem';
@@ -33,6 +35,10 @@ export class IndexComponent implements OnInit, OnDestroy {
 
   @ViewChild('chapterListComp')
   public chapterListComp: ListComponent;
+
+  public iconCog: IconDefinition = faCog;
+  public iconFilter: IconDefinition = faFilter;
+  public iconWarning: IconDefinition = faExclamationCircle;
 
   public filterTerm: string;
   public loading: boolean;
@@ -105,7 +111,7 @@ export class IndexComponent implements OnInit, OnDestroy {
         this.setChapter(args.chapter, args.type);
       });
 
-      const indexFilter = this._stateService.indexFilter;
+    const indexFilter = this._stateService.indexFilter;
 
     if (indexFilter) {
       this.filterTerm = indexFilter;

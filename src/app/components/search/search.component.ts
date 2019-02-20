@@ -1,6 +1,8 @@
 import { ChangeDetectorRef, Component, ElementRef, Input, OnInit, OnDestroy, Renderer, ViewChild } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
 import { distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
+import { faCog, faSearch, faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 
 import { ListComponent } from 'app/controls/list/list.component';
 import { ListItem } from 'app/controls/list/listitem';
@@ -28,6 +30,10 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   @ViewChild('listComp')
   public listComp: ListComponent;
+
+  public iconCog: IconDefinition = faCog;
+  public iconSearch: IconDefinition = faSearch;
+  public iconWarning: IconDefinition = faExclamationCircle;
 
   public searchTerm: string;
   public searchTermLast: string;

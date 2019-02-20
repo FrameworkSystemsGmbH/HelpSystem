@@ -1,10 +1,10 @@
 <div class="hlp-navigation" [ngStyle]="style" [ngClass]="styleClass">
   <div class="hlp-navigation-btn-group">
-    <button class="btn btn-menu" [ngClass]="{ 'btn-menu-selected': isContentSelected() }" (click)="showContent($event)"><i class="fa fa-fw fa-file-text"></i>Contents</button>
-    <button class="btn btn-menu" [ngClass]="{ 'btn-menu-selected': isIndexSelected() }" (click)="showIndex($event)"><i class="fa fa-fw fa-list"></i>Index</button>
+    <button class="btn btn-menu" [ngClass]="{ 'btn-menu-selected': isContentSelected() }" (click)="showContent($event)"><fa-icon [icon]="iconContents" [fixedWidth]="true"></fa-icon>Contents</button>
+    <button class="btn btn-menu" [ngClass]="{ 'btn-menu-selected': isIndexSelected() }" (click)="showIndex($event)"><fa-icon [icon]="iconIndex" [fixedWidth]="true"></fa-icon>Index</button>
   </div>
   <div class="hlp-navigation-btn-group">
-    <button class="btn btn-menu" [ngClass]="{ 'btn-menu-selected': isSearchSelected() }" (click)="showSearch($event)"><i class="fa fa-fw fa-search"></i>Search</button>
-    <button class="btn btn-menu" (click)="print($event)"><i class="fa fa-fw fa-print"></i>Print</button>
+    <button class="btn btn-menu" [ngClass]="{ 'btn-menu-selected': isSearchSelected() }" (click)="showSearch($event)"><fa-icon [icon]="iconSearch" [fixedWidth]="true"></fa-icon>Search</button>
+    <button class="btn btn-menu" (click)="print($event)"><fa-icon [icon]="iconPrint" [fixedWidth]="true"></fa-icon>Print</button>
   </div>
 </div>
