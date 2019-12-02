@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable, of as obsOf } from 'rxjs';
 import { map, share } from 'rxjs/operators';
 
@@ -11,12 +11,12 @@ export class IndexService {
   private _indices: Array<Index>;
   private _indicesStream: Observable<Array<Index>>;
 
-  public constructor(private _http: Http) { }
+  public constructor(private _http: HttpClient) { }
 
   public getIndices(term: string): Observable<Array<Index>> {
     if (!this._indicesStream) {
       this._indicesStream = this._http.get('files/json/index.json').pipe(
-        map(res => res.json() as Array<Index>),
+        map(res => res as Array<Index>),
         share()
       );
 

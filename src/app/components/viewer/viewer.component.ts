@@ -12,7 +12,7 @@ import { Chapter } from 'app/models/chapter';
 })
 export class ViewerComponent implements OnInit, OnDestroy {
 
-  @ViewChild('frame')
+  @ViewChild('frame', { static: false })
   public frame: ElementRef;
 
   @Input()

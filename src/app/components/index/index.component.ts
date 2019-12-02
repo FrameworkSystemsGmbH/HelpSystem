@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ElementRef, Input, OnInit, OnDestroy, Renderer, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, Input, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
 import { distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
@@ -27,13 +27,13 @@ export class IndexComponent implements OnInit, OnDestroy {
   @Input()
   public styleClass: any;
 
-  @ViewChild('txtFilter')
+  @ViewChild('txtFilter', { static: false })
   public txtFilter: ElementRef;
 
-  @ViewChild('indexListComp')
+  @ViewChild('indexListComp', { static: false })
   public indexListComp: ListComponent;
 
-  @ViewChild('chapterListComp')
+  @ViewChild('chapterListComp', { static: false })
   public chapterListComp: ListComponent;
 
   public iconCog: IconDefinition = faCog;
@@ -61,8 +61,7 @@ export class IndexComponent implements OnInit, OnDestroy {
     private _chapterService: ChapterService,
     private _indexService: IndexService,
     private _stateService: StateService,
-    private _changeDetectorRef: ChangeDetectorRef,
-    private _renderer: Renderer) { }
+    private _changeDetectorRef: ChangeDetectorRef) { }
 
   public ngOnInit(): void {
     this._filterSubject = new Subject<string>();
@@ -120,7 +119,9 @@ export class IndexComponent implements OnInit, OnDestroy {
       this._inputSubject.next(null);
     }
 
-    this._renderer.invokeElementMethod(this.txtFilter.nativeElement, 'focus');
+    if (this.txtFilter != null) {
+      this.txtFilter.nativeElement.focus();
+    }
   }
 
   public ngOnDestroy(): void {
@@ -219,7 +220,6 @@ export class IndexComponent implements OnInit, OnDestroy {
   }
 
   public onIndexItemSelected(item: ListItem): void {
-    console.log(item);
     if (item.data && item.data.chapters && item.data.chapters.length > 1) {
       this._stateService.selectIndex(item.data, (this.constructor as any).name);
     } else {

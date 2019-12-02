@@ -1,10 +1,8 @@
-import { Component, HostListener, OnInit, OnDestroy, NgZone, ViewChild } from '@angular/core';
+import { Component, HostListener, OnInit, OnDestroy, NgZone, ViewChild, AfterViewInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Title } from '@angular/platform-browser';
-import { Http } from '@angular/http';
 import { Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
-
-import { ContentComponent } from 'app/components/content/content.component';
 import { ViewerComponent } from 'app/components/viewer/viewer.component';
 import { ChapterService } from 'app/services/chapter.service';
 import { StateService } from 'app/services/state.service';
@@ -17,10 +15,10 @@ import { Meta } from 'app/models/meta';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit, OnDestroy {
+export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  @ViewChild('contentComp') public contentComp: ContentComponent;
-  @ViewChild('viewerComp') public viewerComp: ViewerComponent;
+  @ViewChild('viewerComp', { static: false })
+  public viewerComp: ViewerComponent;
 
   private _initMetaSub: Subscription;
   private _selectedTabSub: Subscription;
@@ -29,7 +27,7 @@ export class AppComponent implements OnInit, OnDestroy {
   public tabType = Tab;
 
   constructor(
-    private _http: Http,
+    private _http: HttpClient,
     private _zone: NgZone,
     private _title: Title,
     private _chapterService: ChapterService,
@@ -43,17 +41,19 @@ export class AppComponent implements OnInit, OnDestroy {
     });
 
     this._initMetaSub = this._http.get('files/json/meta.json').pipe(
-      map(res => res.json() as Meta)
+      map(res => res as Meta)
     ).subscribe(meta => {
       this._title.setTitle(meta.title);
     });
-
-    this.loadReferencedChapter();
 
     (window as any).appComponentRef = {
       zone: this._zone,
       comp: this
     };
+  }
+
+  public ngAfterViewInit(): void {
+    this.loadReferencedChapter();
   }
 
   public ngOnDestroy(): void {

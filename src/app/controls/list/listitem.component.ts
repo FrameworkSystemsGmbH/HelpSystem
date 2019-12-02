@@ -13,7 +13,7 @@ export class ListItemComponent {
   @Input()
   public item: ListItem;
 
-  @ViewChild('itemRef')
+  @ViewChild('itemRef', { static: false })
   public itemRef: ElementRef;
 
   @ViewChildren(ListItemComponent)
@@ -36,7 +36,7 @@ export class ListItemComponent {
   }
 
   public scrollSelectedIntoView(): boolean {
-    if (this.isSelected) {
+    if (this.isSelected()) {
       this.itemRef.nativeElement.scrollIntoView(true);
       return true;
     }
@@ -46,5 +46,7 @@ export class ListItemComponent {
         return itemComp.scrollSelectedIntoView();
       });
     }
+
+    return false;
   }
 }

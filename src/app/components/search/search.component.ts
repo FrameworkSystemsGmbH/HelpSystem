@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ElementRef, Input, OnInit, OnDestroy, Renderer, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, Input, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
 import { distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
@@ -25,10 +25,10 @@ export class SearchComponent implements OnInit, OnDestroy {
   @Input()
   public styleClass: any;
 
-  @ViewChild('txtSearch')
+  @ViewChild('txtSearch', { static: false })
   public txtSearch: ElementRef;
 
-  @ViewChild('listComp')
+  @ViewChild('listComp', { static: false })
   public listComp: ListComponent;
 
   public iconCog: IconDefinition = faCog;
@@ -50,8 +50,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     private _chapterService: ChapterService,
     private _searchService: SearchService,
     private _stateService: StateService,
-    private _changeDetectorRef: ChangeDetectorRef,
-    private _renderer: Renderer) { }
+    private _changeDetectorRef: ChangeDetectorRef) { }
 
   public ngOnInit(): void {
     this._searchSubject = new Subject<string>();
@@ -87,7 +86,9 @@ export class SearchComponent implements OnInit, OnDestroy {
       this._inputSubject.next(searchFilter);
     }
 
-    this._renderer.invokeElementMethod(this.txtSearch.nativeElement, 'focus');
+    if (this.txtSearch != null) {
+      this.txtSearch.nativeElement.focus();
+    }
   }
 
   public ngOnDestroy(): void {
@@ -109,7 +110,6 @@ export class SearchComponent implements OnInit, OnDestroy {
       listItem.id = chapter.id;
       listItem.label = chapter.label;
       listItem.data = chapter;
-      listItem.children = this.buildChapterList(chapter.children);
       items.push(listItem);
     }
 

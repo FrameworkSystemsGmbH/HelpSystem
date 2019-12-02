@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable, of as obsOf } from 'rxjs';
 import { map, share } from 'rxjs/operators';
 
@@ -11,12 +11,12 @@ export class SearchService {
   private _search: Search;
   private _searchStream: Observable<Search>;
 
-  public constructor(private _http: Http) { }
+  public constructor(private _http: HttpClient) { }
 
   public search(term: string): Observable<Array<string>> {
     if (!this._searchStream) {
       this._searchStream = this._http.get('files/json/search.json').pipe(
-        map(res => res.json() as Search),
+        map(res => res as Search),
         share()
       );
 
@@ -36,7 +36,9 @@ export class SearchService {
 
     return this._search
       ? obsOf(this.filterSearch(this._search, terms))
-      : this._searchStream.pipe(map((search: Search) => this.filterSearch(search, terms)));
+      : this._searchStream.pipe(
+        map((search: Search) => this.filterSearch(search, terms))
+      );
   }
 
   private filterSearch(search: Search, terms: Array<string>): Array<string> {

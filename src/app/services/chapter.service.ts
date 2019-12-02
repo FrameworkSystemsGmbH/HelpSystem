@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable, of as obsOf } from 'rxjs';
 import { map, share } from 'rxjs/operators';
 
@@ -12,9 +12,9 @@ export class ChapterService {
   private _dictionary: Dictionary;
   private _dictionaryStream: Observable<Dictionary>;
 
-  public constructor(private _http: Http) {
+  public constructor(private _http: HttpClient) {
     this._dictionaryStream = this._http.get('files/json/dictionary.json').pipe(
-      map(res => res.json() as Dictionary),
+      map(res => res as Dictionary),
       share()
     );
 

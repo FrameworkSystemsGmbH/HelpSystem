@@ -1,5 +1,5 @@
 <li #nodeRef class="hlp-treenode" *ngIf="node">
-  <div class="hlp-treenode-content" [ngClass]="{'hlp-treenode-selected': isSelected()}" (click)="onClick($event)">
+  <div class="hlp-treenode-content" [ngClass]="{'hlp-treenode-selected': isSelected()}" (click)="onClick()">
     <span class="hlp-treenode-icon" *ngIf="getIcon()" (click)="toggle($event)"><fa-icon [icon]="getIcon()" [fixedWidth]="true"></fa-icon></span>
     <span class="hlp-treenode-label">{{ node.label }}</span>
   </div>

@@ -21,7 +21,8 @@ export class ContentComponent implements OnInit, OnDestroy {
   @Input() public style: any;
   @Input() public styleClass: any;
 
-  @ViewChild('treeComp') public treeComp: TreeComponent;
+  @ViewChild('treeComp', { static: false })
+  public treeComp: TreeComponent;
 
   public iconCog: IconDefinition = faCog;
   public iconLeaf: IconDefinition = faBook;

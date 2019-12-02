@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { AppComponent } from 'app/app.component';
@@ -13,8 +13,8 @@ import { ALL_SERVICES } from 'app/services/_all.services';
 @NgModule({
   imports: [
     BrowserModule,
+    HttpClientModule,
     FormsModule,
-    HttpModule,
     FontAwesomeModule
   ],
   declarations: [

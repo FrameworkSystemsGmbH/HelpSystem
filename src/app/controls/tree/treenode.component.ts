@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ElementRef, forwardRef, Inject, Input, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, Input, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 
 import { TreeService } from 'app/controls/tree/tree.service';
@@ -14,7 +14,7 @@ export class TreeNodeComponent {
   @Input()
   public node: TreeNode;
 
-  @ViewChild('nodeRef')
+  @ViewChild('nodeRef', { static: false })
   public nodeRef: ElementRef;
 
   @ViewChildren(TreeNodeComponent)
@@ -43,10 +43,8 @@ export class TreeNodeComponent {
     return icon;
   }
 
-  public onClick(event: any): void {
-    if (this.isLeaf() || (event.target.className && event.target.className.indexOf('hlp-treenode-icon') === -1)) {
-      this.select();
-    }
+  public onClick(): void {
+    this.select();
   }
 
   public select(): void {
@@ -118,6 +116,8 @@ export class TreeNodeComponent {
         return nodeComp.expandSelectedNode();
       });
     }
+
+    return false;
   }
 
   public scrollSelectedIntoView(): boolean {
@@ -131,5 +131,7 @@ export class TreeNodeComponent {
         return nodeComp.scrollSelectedIntoView();
       });
     }
+
+    return false;
   }
 }

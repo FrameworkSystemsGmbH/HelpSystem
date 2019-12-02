@@ -1,7 +1,7 @@
 <div class="hlp-app flex">
   <div [ngSwitch]="selectedTab" class="hlp-app-sidebar flex">
     <hlp-navigation></hlp-navigation>
-    <hlp-content #contentComp class="flex overflow" *ngSwitchCase="tabType.Content"></hlp-content>
+    <hlp-content class="flex overflow" *ngSwitchCase="tabType.Content"></hlp-content>
     <hlp-index class="flex overflow" *ngSwitchCase="tabType.Index"></hlp-index>
     <hlp-search class="flex overflow" *ngSwitchCase="tabType.Search"></hlp-search>
   </div>
